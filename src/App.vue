@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <v-app-bar
-      flat
       app
       color="primary"
       dark
@@ -11,6 +10,15 @@
     <v-content>
       <router-view></router-view>
     </v-content>
+
+    <v-footer padless color="primary">
+      <v-col
+        class="primary py-4 text-center white--text"
+        cols="12"
+      >
+        <strong>Melchizedek</strong>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 
