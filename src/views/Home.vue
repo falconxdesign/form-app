@@ -186,7 +186,7 @@ export default {
     methods: {
       register() {
         this.$v.$touch()
-        if(!this.$v.$error){
+        if(!this.$v.$invalid){
           console.log("good")
           alert('Form submitted')
           this.$v.$reset()
@@ -200,11 +200,8 @@ export default {
           console.log("not good")
         }
         
-        // if(!this.$v.$dirty){
-        //   console.log("good")
-        // }else{
-        //   console.log("not good")
-        // }
+        // you can use .$v.$error or .$v.$invalid to check form validity before submission
+
       }    
     },
   }
