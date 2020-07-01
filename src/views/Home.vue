@@ -10,7 +10,7 @@
                 CREATE ACCOUNT
               </v-list-item-title>
 
-              <v-form v-model="valid">
+              <v-form>
                 <v-text-field
                   v-model="name"
                   :error-messages="nameErrors"
@@ -43,14 +43,14 @@
                 ></v-text-field>
 
                 <v-select
-                  v-model="skills"
+                  v-model="skill"
                   :items="skills"
-                  :error-messages="selectErrors"
-                  prepend-icon="fa-briefcase "
+                  :error-messages="skillsErrors"
+                  prepend-icon="fa-briefcase"
                   label="Skills"
                   required
-                  @change="$v.skills.$touch()"
-                  @blur="$v.skills.$touch()"
+                  @change="$v.skill.$touch()"
+                  @blur="$v.skill.$touch()"
                 ></v-select>
 
                 <v-select
@@ -66,7 +66,7 @@
 
                 <v-select
                   v-model="country"
-                  :items="country"
+                  :items="nation"
                   :error-messages="countryErrors"
                   prepend-icon="fa fa-globe"
                   label="Country"
@@ -76,10 +76,9 @@
                 ></v-select>
 
                 <v-btn
-                  :disabled="!valid"
                   color="primary"
                   class="mr-4"
-                  @click="validate"
+                  @click="register"
                 >
                   register
                 </v-btn>
@@ -98,26 +97,20 @@
 // @ is an alias to /src
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, email, minLength } from 'vuelidate/lib/validators'
+import { hasNumber, hasCapitalLetter, hasSmallLetter } from '../assets/passwordvalidation'
 
 
 export default {
   name: 'Home',
   mixins: [validationMixin],
 
-    validations: {
-      name: { required, maxLength: maxLength(40) },
-      email: { required, email },
-      password: { required, minLength },
-      select: { required }
-      },
-  components: {
-    
-  },
   data: () => ({
     name: '',
     email: '',
-    password:  '',
-    select: null,
+    password: '',
+    skill: null,
+    gender: null,
+    country: null,
       skills: [
         'Web Designer',
         'Illustrator',
@@ -128,54 +121,82 @@ export default {
         'Male',
         'Female'
       ],
-      country: [
+      nation: [
         'Ghana',
         'Nigeria',
         'Mali',
         'Togo',
       ]
   }),
+   validations: {
+      name: { required, maxLength: maxLength(15) },
+      email: { required, email },
+      password: { required, minLength: minLength(8), hasNumber, hasCapitalLetter, hasSmallLetter },
+      skill: { required },
+      gender: { required },
+      country: { required }
+      },
+  components: {
+    
+  },
   computed: {
       nameErrors () {
-        const errors = []
+        const errors = [];
         if (!this.$v.name.$dirty) return errors
-        !this.$v.name.maxLength && errors.push('Name must be at most 40 characters long')
+        !this.$v.name.maxLength && errors.push('Name must be at most 15 characters long')
         !this.$v.name.required && errors.push('Name is required.')
         return errors
       },
-      // checkboxErrors () {
-      //   const errors = []
-      //   if (!this.$v.checkbox.$dirty) return errors
-      //   !this.$v.checkbox.checked && errors.push('You must agree to continue!')
-      //   return errors
-      // },
-      // selectErrors () {
-      //   const errors = []
-      //   if (!this.$v.select.$dirty) return errors
-      //   !this.$v.select.required && errors.push('Item is required')
-      //   return errors
-      // },
-      
-      // emailErrors () {
-      //   const errors = []
-      //   if (!this.$v.email.$dirty) return errors
-      //   !this.$v.email.email && errors.push('Must be valid e-mail')
-      //   !this.$v.email.required && errors.push('E-mail is required')
-      //   return errors
-      // },
+      emailErrors () {
+        const errors = [];
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Must be valid e-mail')
+        !this.$v.email.required && errors.push('E-mail is required')
+        return errors
+      },
+      passwordErrors () {
+        const errors = [];
+        if (!this.$v.password.$dirty) return errors
+        !this.$v.password.minLength && errors.push('Password must be at least 8 characters long')
+        !this.$v.password.hasNumber && errors.push('Password must contain a number')
+        !this.$v.password.hasSmallLetter && errors.push('Password must contain a lowercase letter')
+        !this.$v.password.hasCapitalLetter && errors.push('Password must contain a uppercase letter')
+        !this.$v.password.required && errors.push('Password is required')
+        return errors
+      },
+      skillsErrors () {
+        const errors = []
+        if (!this.$v.skill.$dirty) return errors
+        !this.$v.skill.required && errors.push('Skill is required')
+        return errors
+      },
+      genderErrors () {
+        const errors = []
+        if (!this.$v.gender.$dirty) return errors
+        !this.$v.gender.required && errors.push('Gender is required')
+        return errors
+      },
+      countryErrors () {
+        const errors = []
+        if (!this.$v.country.$dirty) return errors
+        !this.$v.country.required && errors.push('Country is required')
+        return errors
+      },      
     },
     methods: {
-      submit () {
+      register() {
         this.$v.$touch()
+
+        if(!this.$v.$dirty){
+          console.log("good")
+        }else{
+          console.log("not good")
+        }
       }    
     },
   }
 </script>
 
 <style scoped>
-  /* #cardheader{
-    background-color: blue;
-    margin: 0 auto;
-    padding: 1rem;
-  } */
+  
 </style>

@@ -7,9 +7,9 @@
     >
       <span class="mr-2 text--center">Vue Form App</span>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <router-view></router-view>
-    </v-content>
+    </v-main>
 
     <v-footer padless color="primary">
       <v-col
