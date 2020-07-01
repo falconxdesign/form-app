@@ -186,12 +186,25 @@ export default {
     methods: {
       register() {
         this.$v.$touch()
-
-        if(!this.$v.$dirty){
+        if(!this.$v.$error){
           console.log("good")
+          alert('Form submitted')
+          this.$v.$reset()
+          this.name = '',
+          this.email = '',
+          this.password = '',
+          this.skill = null,
+          this.gender = null,
+          this.country = null
         }else{
           console.log("not good")
         }
+        
+        // if(!this.$v.$dirty){
+        //   console.log("good")
+        // }else{
+        //   console.log("not good")
+        // }
       }    
     },
   }
